@@ -5,7 +5,8 @@
 # Parameters - fill these in before running the script!
 # =====================================================
 
-$datasetId = " Fill Me in"         # the ID of dataset to rebind
+$groupId = "5befb9fb-e434-4e19-96c0-0fe600073569"         # the ID of workspace to rebind
+$datasetId = "9127fb5f-bae4-4597-a2bd-7b28415b23dd"         # the ID of dataset to rebind
 
 # End Parameters =======================================
 
@@ -13,11 +14,12 @@ $datasetId = " Fill Me in"         # the ID of dataset to rebind
 Login-PowerBI
 
 # Make the request 
-$uri = "datasets/$datasetId/refreshSchedule";
+$uri = "/groups/$groupId/datasets/$datasetId/refreshSchedule";
 
 # Set "value": {"enabled": false} to disable the schedule refresh
 $body = '{
     "value": {
+        "enabled": true,
         "days": [
             "Monday",
             "Tuesday",
