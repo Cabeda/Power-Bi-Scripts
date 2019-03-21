@@ -44,5 +44,5 @@ foreach ($Workspace in $Workspaces) {
 }
     
 #Export Data to a CSV File
-$Reports | Export-Csv "$WorkspaceName.csv" -NoTypeInformation -Delimiter ";"
+$Reports | Export-Csv "Export Files/$WorkspaceName.csv" -NoTypeInformation -Delimiter ";"
 
