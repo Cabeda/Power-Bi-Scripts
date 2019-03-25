@@ -1,7 +1,7 @@
 param (
     [Parameter()][string]$WorkspaceId,
     [Parameter()] [boolean]$ExportFile,
-    [Parameter()][boolean]$ExportAll
+    [Parameter()][boolean]$All
 )
 
 ##########################  
@@ -15,7 +15,7 @@ $Workspaces = Get-PowerBIWorkspace
 $Workspaces
 
 
-if (!$ExportAll) {   
+if (!$All) {   
     $GridArguments = @{
         OutputMode = 'Single'
         Title      = 'Please select a Workspace and click OK'
@@ -32,14 +32,20 @@ if (!$ExportAll) {
 
 $WorkspaceName = "Reports";
 
+$Reports = @()
+
 foreach ($Workspace in $Workspaces) {
 
     #Set name to single report if the 
-    if (!$ExportAll) {
+    if (!$All) {
         $WorkspaceName = $Workspace.Name
     }
     
-    $Reports = Get-PowerBIReport -WorkspaceId $Workspace.Id | Add-Member -MemberType AliasProperty -Name ReportId -Value Id -PassThru | Select-Object -Property Name, @{l="WorkspaceId";e={$Workspace.Id}}, @{l="Workspace Name";e={$Workspace.Name}} ReportId, DatasetId
+    $Reports += Get-PowerBIReport -WorkspaceId $Workspace.Id | 
+                Add-Member -MemberType AliasProperty -Name ReportId -Value Id -PassThru | 
+                Select-Object -Property Name, ReportId, DatasetId | 
+                Add-Member -NotePropertyName "WorkspaceId" -NotePropertyValue $workspace.Id -PassThru | 
+                Add-Member -NotePropertyName "Workspace Name" -NotePropertyValue $workspace.Name -PassThru
         
 }
     
